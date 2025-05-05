@@ -26,7 +26,11 @@ const Navbar = () => {
           {isLoggedIn ? (
             <button style={styles.button} onClick={logout}>Logout</button>
           ) : (
+            <>
             <button style={styles.button} onClick={login}>Login</button>
+            <>   </>
+            <button style={styles.button} onClick={login}>Sign Up</button>
+            </>
           )}
         </li>
       </ul>

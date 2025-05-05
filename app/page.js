@@ -6,6 +6,7 @@ import HeroSection from "./components/herosection";
 import React, { useState } from "react";
 import Head from "next/head";
 import { AuthProvider } from "./context/Authcontext";
+import About from "./components/about";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,7 +31,7 @@ export default function Home() {
 
         <Navbar />
         <HeroSection />
-        
+        <About />
         <footer>
           <p>&copy; 2025 Budgy. All rights reserved.</p>
         </footer>
