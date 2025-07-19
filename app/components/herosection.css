@@ -1,45 +1,205 @@
 .hero-section {
-    background: linear-gradient(to right, #3B82F6, #2563EB);
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
     color: white;
-    padding: 80px 20px;
+    padding: 100px 20px;
     text-align: center;
-  }
-  
-  .hero-container {
-    max-width: 800px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/grid-pattern.svg') center/cover;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.hero-container {
+    max-width: 1200px;
     margin: 0 auto;
-  }
-  
-  .hero-container h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  
-  .hero-container h1 span {
-    color: #FACC15; /* Yellow highlight for "Budgy" */
-  }
-  
-  .hero-container p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    max-width: 800px;
+}
+
+.hero-content h1 span {
+    color: #FACC15;
+    position: relative;
+    display: inline-block;
+}
+
+.hero-content h1 span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: #FACC15;
+    opacity: 0.3;
+    border-radius: 4px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
     color: #f0f9ff;
-  }
-  
-  .hero-button {
-    background-color: white;
-    color: #3B82F6;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 3rem 0;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature h3 {
+    font-size: 1.25rem;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .hero-button:hover {
-    background-color: #e2e8f0;
+    margin-bottom: 0.5rem;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #e2e8f0;
+}
+
+.cta-container {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.cta-button {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.cta-button.primary {
+    background-color: #FACC15;
+    color: #1e40af;
+}
+
+.cta-button.primary:hover {
+    background-color: #fbbf24;
     transform: translateY(-2px);
-  }
+}
+
+.cta-button.secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid white;
+}
+
+.cta-button.secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.trust-badges {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.badge-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FACC15;
+}
+
+.badge-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-features {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .cta-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .trust-badges {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .feature {
+        padding: 1.5rem;
+    }
+}
   

@@ -1,24 +1,18 @@
 "use client";
-import Image from "next/image";
-import Navbar from "./components/navbar";
-import HeroSection from "./components/herosection";
-import React, { useState } from "react";
-import Head from "next/head";
-import { AuthProvider } from "./context/Authcontext";
-import About from "./components/about";
+import About from "../components/about";
+import Navbar from "../components/navbar";
+import { AuthProvider } from "../context/Authcontext";
 
-export default function Home() {
+export default function AboutPage() {
   return (
     <AuthProvider>
-      <div className="app-container">
-        
+      <div className="page-container">
         <main className="main-content">
-          <HeroSection />
           <About />
         </main>
 
         <style jsx>{`
-          .app-container {
+          .page-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -34,18 +28,7 @@ export default function Home() {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-          }
-
-          h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-          }
-
-          p {
-            color: #34495e;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            margin-top: 80px; /* Add margin to account for fixed navbar */
           }
 
           .footer {
@@ -61,27 +44,11 @@ export default function Home() {
             .main-content {
               padding: 15px;
             }
-
-            h1 {
-              font-size: 2rem;
-            }
-
-            p {
-              font-size: 1rem;
-            }
           }
 
           @media (max-width: 480px) {
             .main-content {
               padding: 10px;
-            }
-
-            h1 {
-              font-size: 1.8rem;
-            }
-
-            p {
-              font-size: 0.9rem;
             }
 
             .footer {
@@ -92,4 +59,4 @@ export default function Home() {
       </div>
     </AuthProvider>
   );
-}
+} 
