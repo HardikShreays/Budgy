@@ -1,18 +1,23 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useAuth } from "../context/Authcontext";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn, login, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const isActivePage = (path) => {
+    return pathname === path;
+  };
   return (
     <nav style={styles.navbar}>
       <div style={styles.logo}>
@@ -38,13 +43,40 @@ const Navbar = () => {
       {/* Navigation Links */}
       <ul className={`nav-links ${isMenuOpen ? "open" : ""}`} style={styles.navLinks}>
         <li className="nav-item">
-          <a href="/" style={styles.navLink} className="nav-link-hover">Home</a>
+          <a 
+            href="/" 
+            style={{...styles.navLink, color: isActivePage('/') ? '#1e40af' : '#3B82F6'}} 
+            className={`nav-link-hover ${isActivePage('/') ? 'active' : ''}`}
+          >
+            Home
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/about" style={styles.navLink} className="nav-link-hover">About</a>
+          <a 
+            href="/about" 
+            style={{...styles.navLink, color: isActivePage('/about') ? '#1e40af' : '#3B82F6'}} 
+            className={`nav-link-hover ${isActivePage('/about') ? 'active' : ''}`}
+          >
+            About
+          </a>
         </li>
         <li className="nav-item">
-          <a href="#contact" style={styles.navLink} className="nav-link-hover">Contact</a>
+          <a 
+            href="/services" 
+            style={{...styles.navLink, color: isActivePage('/services') ? '#1e40af' : '#3B82F6'}} 
+            className={`nav-link-hover ${isActivePage('/services') ? 'active' : ''}`}
+          >
+            Services
+          </a>
+        </li>
+        <li className="nav-item">
+          <a 
+            href="/blog" 
+            style={{...styles.navLink, color: isActivePage('/blog') ? '#1e40af' : '#3B82F6'}} 
+            className={`nav-link-hover ${isActivePage('/blog') ? 'active' : ''}`}
+          >
+            Blog
+          </a>
         </li>
         <li className="nav-item">
           <a href="/dashboard" style={styles.navLink} className="nav-link-hover">Dashboard</a>
@@ -83,6 +115,10 @@ const Navbar = () => {
         }
         .nav-link-hover:hover {
           color: #1e40af;
+        }
+        .nav-link-hover.active {
+          color: #1e40af;
+          font-weight: 600;
         }
 
         /* Desktop Styles */

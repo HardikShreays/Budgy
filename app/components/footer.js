@@ -22,18 +22,18 @@ const Footer = () => {
           <ul style={styles.linkList}>
             <li><Link href="/" style={styles.link}>Home</Link></li>
             <li><Link href="/about" style={styles.link}>About Us</Link></li>
-            <li><Link href="/features" style={styles.link}>Features</Link></li>
-            <li><Link href="/pricing" style={styles.link}>Pricing</Link></li>
+            <li><Link href="/services" style={styles.link}>Services</Link></li>
+            <li><Link href="/blog" style={styles.link}>Blog</Link></li>
           </ul>
         </div>
 
         <div style={styles.section}>
           <h4 style={styles.heading}>Resources</h4>
           <ul style={styles.linkList}>
-            <li><Link href="/blog" style={styles.link}>Blog</Link></li>
             <li><Link href="/help" style={styles.link}>Help Center</Link></li>
             <li><Link href="/faq" style={styles.link}>FAQ</Link></li>
             <li><Link href="/contact" style={styles.link}>Contact Us</Link></li>
+            <li><Link href="/dashboard" style={styles.link}>Dashboard</Link></li>
           </ul>
         </div>
 
@@ -45,6 +45,21 @@ const Footer = () => {
             <li><Link href="/security" style={styles.link}>Security</Link></li>
             <li><Link href="/cookies" style={styles.link}>Cookie Policy</Link></li>
           </ul>
+        </div>
+        
+        <div style={styles.section}>
+          <h4 style={styles.heading}>Newsletter</h4>
+          <p style={styles.description}>
+            Stay updated with the latest financial tips and product updates.
+          </p>
+          <div style={styles.newsletterForm}>
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              style={styles.emailInput}
+            />
+            <button style={styles.subscribeBtn}>Subscribe</button>
+          </div>
         </div>
       </div>
 
@@ -80,7 +95,7 @@ const styles = {
     margin: "0 auto",
     padding: "0 20px",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     gap: "40px",
   },
   section: {
@@ -124,6 +139,31 @@ const styles = {
     "&:hover": {
       color: "#3B82F6",
     },
+  },
+  newsletterForm: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginTop: "15px",
+  },
+  emailInput: {
+    padding: "10px",
+    border: "1px solid #333",
+    borderRadius: "4px",
+    backgroundColor: "#2a2a2a",
+    color: "#ffffff",
+    fontSize: "14px",
+  },
+  subscribeBtn: {
+    padding: "10px 15px",
+    backgroundColor: "#3B82F6",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "600",
+    transition: "background 0.3s ease",
   },
   bottomSection: {
     maxWidth: "1200px",
