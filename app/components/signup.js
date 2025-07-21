@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from '../context/Authcontext';
 
 const Signup = () => {
   const router = useRouter();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +15,8 @@ const Signup = () => {
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,11 +41,20 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError('');
     if (validateForm()) {
-      // Here you would typically make an API call to register the user
-      console.log('Form submitted:', formData);
-      // After successful registration, redirect to login or dashboard
-      // router.push('/dashboard');
+      setIsSubmitting(true);
+      try {
+        await signup({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        });
+        // Success: signup will redirect
+      } catch (error) {
+        setFormError(error.message || 'Signup failed.');
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -54,6 +67,7 @@ const Signup = () => {
         </div>
         <h2>Create Your Account</h2>
         <form onSubmit={handleSubmit} className="signup-form">
+          {formError && <div className="form-error-message">{formError}</div>}
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
@@ -110,7 +124,7 @@ const Signup = () => {
             {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
           </div>
 
-          <button type="submit" className="signup-button">Sign Up</button>
+          <button type="submit" className="signup-button" disabled={isSubmitting}>{isSubmitting ? 'Signing Up...' : 'Sign Up'}</button>
           
           <div className="login-link">
             Already have an account? <Link href="/login" className="link">Log in</Link>
@@ -234,6 +248,16 @@ const Signup = () => {
         .link:hover {
           color: #2563EB;
           text-decoration: underline;
+        }
+
+        .form-error-message {
+          color: #e74c3c;
+          background-color: #fde8e8;
+          padding: 0.8rem;
+          border-radius: 5px;
+          margin-bottom: 1rem;
+          text-align: center;
+          font-size: 0.9rem;
         }
 
         @media (max-width: 480px) {

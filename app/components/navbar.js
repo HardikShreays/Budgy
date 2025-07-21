@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "../context/Authcontext";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn, login, logout } = useAuth();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -52,8 +54,8 @@ const Navbar = () => {
             <button style={styles.button} onClick={logout}>Logout</button>
           ) : (
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button style={styles.button} onClick={login}>Login</button>
-              <button style={styles.button} onClick={login}>Sign Up</button>
+              <button style={styles.button} onClick={() => router.push('/login')}>Login</button>
+              <button style={styles.button} onClick={() => router.push('/signup')}>Sign Up</button>
             </div>
           )}
         </li>
