@@ -62,59 +62,6 @@ const Dashboard = () => {
     }
   }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) {
-    return null;
-  }
-
-  const handleAddTransaction = (transactionData) => {
-    // Find category details if categoryId is provided
-    let categoryDetails = {};
-    if (transactionData.categoryId) {
-      const category = categories.find(cat => cat.id === transactionData.categoryId);
-      if (category) {
-        categoryDetails = {
-          categoryId: category.id,
-          category: category.name
-        };
-      }
-    }
-
-    setTransactions([
-      ...transactions,
-      {
-        id: Date.now(),
-        ...transactionData,
-        ...categoryDetails,
-      },
-    ]);
-  };
-
-  const handleUpdateTransaction = (id, updatedData) => {
-    // Find category details if categoryId is provided
-    let categoryDetails = {};
-    if (updatedData.categoryId) {
-      const category = categories.find(cat => cat.id === updatedData.categoryId);
-      if (category) {
-        categoryDetails = {
-          categoryId: category.id,
-          category: category.name
-        };
-      }
-    }
-
-    setTransactions(transactions.map(t => 
-      t.id === id ? { ...t, ...updatedData, ...categoryDetails } : t
-    ));
-  };
-
-  const handleEditTransaction = (transaction) => {
-    setEditingTransaction(transaction);
-  };
-
-  const handleDelete = (id) => {
-    setTransactions(transactions.filter((t) => t.id !== id));
-  };
-
   // Memoized calculations for better performance
   const financialData = useMemo(() => {
     const totalIncome = transactions
@@ -168,6 +115,59 @@ const Dashboard = () => {
 
     return { barData, doughnutData };
   }, [transactions, financialData]);
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
+  const handleAddTransaction = (transactionData) => {
+    // Find category details if categoryId is provided
+    let categoryDetails = {};
+    if (transactionData.categoryId) {
+      const category = categories.find(cat => cat.id === transactionData.categoryId);
+      if (category) {
+        categoryDetails = {
+          categoryId: category.id,
+          category: category.name
+        };
+      }
+    }
+
+    setTransactions([
+      ...transactions,
+      {
+        id: Date.now(),
+        ...transactionData,
+        ...categoryDetails,
+      },
+    ]);
+  };
+
+  const handleUpdateTransaction = (id, updatedData) => {
+    // Find category details if categoryId is provided
+    let categoryDetails = {};
+    if (updatedData.categoryId) {
+      const category = categories.find(cat => cat.id === updatedData.categoryId);
+      if (category) {
+        categoryDetails = {
+          categoryId: category.id,
+          category: category.name
+        };
+      }
+    }
+
+    setTransactions(transactions.map(t => 
+      t.id === id ? { ...t, ...updatedData, ...categoryDetails } : t
+    ));
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+  };
+
+  const handleDelete = (id) => {
+    setTransactions(transactions.filter((t) => t.id !== id));
+  };
 
   const chartOptions = {
     responsive: true,
