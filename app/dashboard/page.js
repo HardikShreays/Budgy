@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/Authcontext';
+import { useBudget } from '../context/BudgetContext';
 import { useRouter } from 'next/navigation';
 import {
   Chart as ChartJS,
@@ -14,6 +15,10 @@ import {
 import TransactionForm from '../components/dashboard/TransactionForm';
 import TransactionList from '../components/dashboard/TransactionList';
 import ChartCard from '../components/dashboard/ChartCard';
+import CategoryManager from '../components/dashboard/CategoryManager';
+import BudgetOverview from '../components/dashboard/BudgetOverview';
+import RecurringExpenses from '../components/dashboard/RecurringExpenses';
+import BudgetAlerts from '../components/dashboard/BudgetAlerts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend);
 
@@ -24,6 +29,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
 const Dashboard = () => {
   const { isLoggedIn } = useAuth();
+  const { categories, checkBudgetAlerts } = useBudget();
   const router = useRouter();
 
   const [transactions, setTransactions] = useState([]);
@@ -43,8 +49,10 @@ const Dashboard = () => {
 
   // Save transactions to localStorage whenever transactions change
   useEffect(() => {
-    if (transactions.length > 0) {
       localStorage.setItem('budgy-transactions', JSON.stringify(transactions));
+    // Check for budget alerts whenever transactions change
+    if (transactions.length > 0) {
+      checkBudgetAlerts(transactions);
     }
   }, [transactions]);
 
@@ -59,18 +67,43 @@ const Dashboard = () => {
   }
 
   const handleAddTransaction = (transactionData) => {
+    // Find category details if categoryId is provided
+    let categoryDetails = {};
+    if (transactionData.categoryId) {
+      const category = categories.find(cat => cat.id === transactionData.categoryId);
+      if (category) {
+        categoryDetails = {
+          categoryId: category.id,
+          category: category.name
+        };
+      }
+    }
+
     setTransactions([
       ...transactions,
       {
         id: Date.now(),
         ...transactionData,
+        ...categoryDetails,
       },
     ]);
   };
 
   const handleUpdateTransaction = (id, updatedData) => {
+    // Find category details if categoryId is provided
+    let categoryDetails = {};
+    if (updatedData.categoryId) {
+      const category = categories.find(cat => cat.id === updatedData.categoryId);
+      if (category) {
+        categoryDetails = {
+          categoryId: category.id,
+          category: category.name
+        };
+      }
+    }
+
     setTransactions(transactions.map(t => 
-      t.id === id ? { ...t, ...updatedData } : t
+      t.id === id ? { ...t, ...updatedData, ...categoryDetails } : t
     ));
   };
 
@@ -113,7 +146,8 @@ const Dashboard = () => {
     const expensesByCategory = transactions
       .filter(t => t.type === 'Expense')
       .reduce((acc, t) => {
-        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        const categoryName = t.category || 'Uncategorized';
+        acc[categoryName] = (acc[categoryName] || 0) + t.amount;
         return acc;
       }, {});
 
@@ -148,6 +182,14 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard</h1>
+      
+      <BudgetAlerts />
+      
+      <CategoryManager />
+      
+      <BudgetOverview transactions={transactions} />
+      
+      <RecurringExpenses onAddTransaction={handleAddTransaction} />
       
       <TransactionForm
         onAddTransaction={handleAddTransaction}

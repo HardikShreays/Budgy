@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useBudget } from '../../context/BudgetContext';
 
 const TransactionForm = ({ 
   onAddTransaction, 
@@ -6,19 +7,16 @@ const TransactionForm = ({
   editingTransaction, 
   setEditingTransaction 
 }) => {
+  const { categories } = useBudget();
+  
   const [formData, setFormData] = useState({
     desc: '',
     amount: '',
     type: 'Income',
     date: new Date().toISOString().split('T')[0], // Today's date
-    category: ''
+    categoryId: ''
   });
 
-  // Default categories for different transaction types
-  const categories = {
-    Income: ['Salary', 'Freelance', 'Investment', 'Gift', 'Other Income'],
-    Expense: ['Food', 'Transport', 'Utilities', 'Entertainment', 'Healthcare', 'Shopping', 'Education', 'Other Expense']
-  };
 
   // Update form when editing transaction changes
   useEffect(() => {
@@ -28,7 +26,7 @@ const TransactionForm = ({
         amount: editingTransaction.amount.toString(),
         type: editingTransaction.type,
         date: editingTransaction.date,
-        category: editingTransaction.category
+        categoryId: editingTransaction.categoryId || ''
       });
     } else {
       // Reset form when not editing
@@ -37,26 +35,17 @@ const TransactionForm = ({
         amount: '',
         type: 'Income',
         date: new Date().toISOString().split('T')[0],
-        category: ''
+        categoryId: ''
       });
     }
   }, [editingTransaction]);
 
-  // Update category when type changes
-  useEffect(() => {
-    if (!editingTransaction) {
-      setFormData(prev => ({
-        ...prev,
-        category: categories[prev.type][0] // Set first category as default
-      }));
-    }
-  }, [formData.type, editingTransaction]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'categoryId' ? parseInt(value) || '' : value
     }));
   };
 
@@ -64,16 +53,21 @@ const TransactionForm = ({
     e.preventDefault();
     
     const numericAmount = parseFloat(formData.amount);
-    if (!formData.desc.trim() || isNaN(numericAmount) || numericAmount <= 0 || !formData.category) {
+    if (!formData.desc.trim() || isNaN(numericAmount) || numericAmount <= 0) {
       return;
     }
 
+    // For expenses, require category selection
+    if (formData.type === 'Expense' && !formData.categoryId) {
+      alert('Please select a category for expenses');
+      return;
+    }
     const transactionData = {
       desc: formData.desc.trim(),
       amount: numericAmount,
       type: formData.type,
       date: formData.date,
-      category: formData.category
+      categoryId: formData.categoryId || null
     };
 
     if (editingTransaction) {
@@ -89,7 +83,7 @@ const TransactionForm = ({
       amount: '',
       type: 'Income',
       date: new Date().toISOString().split('T')[0],
-      category: categories.Income[0]
+      categoryId: ''
     });
   };
 
@@ -100,10 +94,16 @@ const TransactionForm = ({
       amount: '',
       type: 'Income',
       date: new Date().toISOString().split('T')[0],
-      category: categories.Income[0]
+      categoryId: ''
     });
   };
 
+  // Filter categories based on transaction type
+  const availableCategories = categories.filter(category => {
+    // For now, show all categories for expenses, none for income
+    // You can modify this logic based on your needs
+    return formData.type === 'Expense';
+  });
   return (
     <form onSubmit={handleSubmit} className="transaction-form">
       <h2>{editingTransaction ? 'Edit Transaction' : 'Add Transaction'}</h2>
@@ -156,14 +156,30 @@ const TransactionForm = ({
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="category">Category</label>
-        <select id="category" name="category" value={formData.category} onChange={handleChange} required>
-          {categories[formData.type].map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-      </div>
+      {formData.type === 'Expense' && (
+        <div className="form-group">
+          <label htmlFor="categoryId">Category</label>
+          <select 
+            id="categoryId" 
+            name="categoryId" 
+            value={formData.categoryId} 
+            onChange={handleChange} 
+            required={formData.type === 'Expense'}
+          >
+            <option value="">Select a category</option>
+            {availableCategories.map(category => (
+              <option key={category.id} value={category.id}>
+                {category.icon} {category.name}
+              </option>
+            ))}
+          </select>
+          {availableCategories.length === 0 && (
+            <p className="category-hint">
+              No categories available. Create categories first to assign expenses.
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="form-buttons">
         <button type="submit" className="submit-btn">
@@ -219,6 +235,12 @@ const TransactionForm = ({
           box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        .category-hint {
+          color: #6b7280;
+          font-size: 0.875rem;
+          margin-top: 4px;
+          font-style: italic;
+        }
         .form-buttons {
           display: flex;
           gap: 12px;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useBudget } from '../../context/BudgetContext';
 
 const TransactionList = ({ 
   transactions, 
@@ -6,25 +7,8 @@ const TransactionList = ({
   onEditTransaction,
   currencyFormatter 
 }) => {
-  // Category icons mapping
-  const categoryIcons = {
-    // Income categories
-    'Salary': '💼',
-    'Freelance': '💻',
-    'Investment': '📈',
-    'Gift': '🎁',
-    'Other Income': '💰',
-    
-    // Expense categories
-    'Food': '🍽️',
-    'Transport': '🚗',
-    'Utilities': '⚡',
-    'Entertainment': '🎬',
-    'Healthcare': '🏥',
-    'Shopping': '🛍️',
-    'Education': '📚',
-    'Other Expense': '💸'
-  };
+  const { getCategoryById } = useBudget();
+  
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -35,6 +19,31 @@ const TransactionList = ({
     });
   };
 
+  const getTransactionIcon = (transaction) => {
+    if (transaction.type === 'Income') {
+      return '💰'; // Default income icon
+    }
+    
+    if (transaction.categoryId) {
+      const category = getCategoryById(transaction.categoryId);
+      return category?.icon || '💸';
+    }
+    
+    return '💸'; // Default expense icon
+  };
+
+  const getCategoryName = (transaction) => {
+    if (transaction.type === 'Income') {
+      return 'Income';
+    }
+    
+    if (transaction.categoryId) {
+      const category = getCategoryById(transaction.categoryId);
+      return category?.name || 'Uncategorized';
+    }
+    
+    return transaction.category || 'Uncategorized';
+  };
   if (transactions.length === 0) {
     return (
       <div className="transaction-list">
@@ -88,7 +97,7 @@ const TransactionList = ({
           >
             <div className="transaction-main">
               <div className="transaction-icon">
-                {categoryIcons[transaction.category] || '💰'}
+                {getTransactionIcon(transaction)}
               </div>
               <div className="transaction-details">
                 <div className="transaction-header">
@@ -99,7 +108,7 @@ const TransactionList = ({
                   </span>
                 </div>
                 <div className="transaction-meta">
-                  <span className="transaction-category">{transaction.category}</span>
+                  <span className="transaction-category">{getCategoryName(transaction)}</span>
                   <span className="transaction-date">{formatDate(transaction.date)}</span>
                 </div>
               </div>
