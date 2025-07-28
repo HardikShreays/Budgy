@@ -16,7 +16,6 @@
 - [🔧 Development](#-development)
 - [🏗️ Architecture](#️-architecture)
 - [📱 Usage Guide](#-usage-guide)
-
 - [📦 Deployment](#-deployment)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)

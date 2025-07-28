@@ -45,6 +45,7 @@ const SearchBar = () => {
           background: #f8fafc;
           padding: 15px 0;
           border-bottom: 1px solid #e2e8f0;
+          width: 100%;
         }
 
         .search-form {
@@ -67,6 +68,7 @@ const SearchBar = () => {
           font-size: 16px;
           outline: none;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          box-sizing: border-box;
         }
 
         .search-input:focus {
@@ -96,7 +98,23 @@ const SearchBar = () => {
           background: #2563EB;
         }
 
+        /* Tablet breakpoint */
+        @media (max-width: 1024px) {
+          .search-form {
+            padding: 0 15px;
+          }
+        }
+
+        /* Mobile breakpoint */
         @media (max-width: 768px) {
+          .search-bar-container {
+            padding: 12px 0;
+          }
+
+          .search-form {
+            padding: 0 15px;
+          }
+
           .search-input {
             font-size: 14px;
             padding: 10px 45px 10px 14px;
@@ -105,6 +123,40 @@ const SearchBar = () => {
           .search-button {
             width: 32px;
             height: 32px;
+          }
+        }
+
+        /* Small mobile breakpoint */
+        @media (max-width: 480px) {
+          .search-bar-container {
+            padding: 10px 0;
+          }
+
+          .search-form {
+            padding: 0 10px;
+          }
+
+          .search-input {
+            font-size: 13px;
+            padding: 8px 40px 8px 12px;
+          }
+
+          .search-button {
+            width: 30px;
+            height: 30px;
+          }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 320px) {
+          .search-input {
+            font-size: 12px;
+            padding: 6px 35px 6px 10px;
+          }
+
+          .search-button {
+            width: 28px;
+            height: 28px;
           }
         }
       `}</style>

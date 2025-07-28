@@ -114,6 +114,7 @@ const ContactForm = () => {
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           max-width: 400px;
           width: 100%;
+          box-sizing: border-box;
         }
 
         .form-header {
@@ -122,7 +123,7 @@ const ContactForm = () => {
         }
 
         .form-header h3 {
-          font-size: 1.5rem;
+          font-size: clamp(1.2rem, 3vw, 1.5rem);
           font-weight: 700;
           color: #1e293b;
           margin-bottom: 0.5rem;
@@ -130,7 +131,7 @@ const ContactForm = () => {
 
         .form-header p {
           color: #64748b;
-          font-size: 0.9rem;
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
           line-height: 1.5;
         }
 
@@ -149,7 +150,7 @@ const ContactForm = () => {
         .form-group label {
           font-weight: 600;
           color: #374151;
-          font-size: 0.9rem;
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
 
         .form-group input,
@@ -157,9 +158,10 @@ const ContactForm = () => {
           padding: 0.75rem;
           border: 2px solid #e5e7eb;
           border-radius: 8px;
-          font-size: 1rem;
+          font-size: clamp(0.9rem, 2.5vw, 1rem);
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
           background: white;
+          box-sizing: border-box;
         }
 
         .form-group input:focus,
@@ -180,7 +182,7 @@ const ContactForm = () => {
           border: none;
           padding: 0.875rem 1.5rem;
           border-radius: 8px;
-          font-size: 1rem;
+          font-size: clamp(0.9rem, 2.5vw, 1rem);
           font-weight: 600;
           cursor: pointer;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -205,7 +207,7 @@ const ContactForm = () => {
           padding: 0.75rem;
           border-radius: 6px;
           text-align: center;
-          font-size: 0.9rem;
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
           border: 1px solid #a7f3d0;
         }
 
@@ -215,17 +217,60 @@ const ContactForm = () => {
           padding: 0.75rem;
           border-radius: 6px;
           text-align: center;
-          font-size: 0.9rem;
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
           border: 1px solid #fecaca;
         }
 
-        @media (max-width: 480px) {
+        /* Tablet breakpoint */
+        @media (max-width: 1024px) {
+          .contact-form-container {
+            padding: 1.75rem;
+          }
+        }
+
+        /* Mobile breakpoint */
+        @media (max-width: 768px) {
           .contact-form-container {
             padding: 1.5rem;
+            max-width: 100%;
+          }
+        }
+
+        /* Small mobile breakpoint */
+        @media (max-width: 480px) {
+          .contact-form-container {
+            padding: 1.25rem;
           }
 
           .form-header h3 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+          }
+
+          .form-group input,
+          .form-group textarea {
+            padding: 0.625rem;
+          }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 320px) {
+          .contact-form-container {
+            padding: 1rem;
+          }
+
+          .form-header h3 {
+            font-size: 1.1rem;
+          }
+
+          .form-group input,
+          .form-group textarea {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+          }
+
+          .submit-btn {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.85rem;
           }
         }
       `}</style>
